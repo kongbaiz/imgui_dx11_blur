@@ -8,18 +8,27 @@
   
   ...
 
-
   //You need to use blur before adding widgets
-  ImGui::Begin("Window Title", &g.showMenu, ImGuiWindowFlags_NoSavedSettings);
-  Blur::Begin();
-  if (g.blurBackground)
-     Blur::Apply(ImGui::GetBackgroundDrawList(), ImGui::GetMainViewport()->Pos, ImGui::GetMainViewport()->Size, g.radius);
-  else
-     Blur::Apply(ImGui::GetWindowDrawList(), ImGui::GetWindowPos(), ImGui::GetWindowSize(), g.radius);
+  static bool showMenu = false;
+  static bool blurBackground = false;
+  static float radius = 4.0f;
   
-  ImGui::Checkbox("Switch to background blur", &g.blurBackground);
-  ImGui::SliderFloat("Radius", &g.radius, 0.0f, 10.0f, "Radius = %.1f");
-  Blur::End();
+  ImGui::Begin("Window Title", &showMenu, ImGuiWindowFlags_NoSavedSettings);
+  {
+    
+    Blur::Begin();
+    {
+      if (blurBackground)
+         Blur::Apply(ImGui::GetBackgroundDrawList(), ImGui::GetMainViewport()->Pos, ImGui::GetMainViewport()->Size, radius);
+      else
+         Blur::Apply(ImGui::GetWindowDrawList(), ImGui::GetWindowPos(), ImGui::GetWindowSize(), radius);
+    }
+    Blur::End();
+    
+    ImGui::Checkbox("Switch to background blur", &blurBackground);
+    ImGui::SliderFloat("Radius", &radius, 0.0f, 10.0f, "Radius = %.1f");
+
+  }
   ImGui::End();
   ```
 
